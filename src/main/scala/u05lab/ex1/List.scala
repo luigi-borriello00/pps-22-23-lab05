@@ -66,10 +66,8 @@ enum List[A]:
     case h :: t => foldRight(List(, 0))((i, s) => (i,  :: s)*/
 
   def partition(pred: A => Boolean): (List[A], List[A]) =
-    val lt: List[A] = this.filter(pred)
-    val lf: List[A] = this.filter(!pred(_))
-    (lt, lf)
-  
+    foldRight((Nil(): List[A], Nil(): List[A]))((e, s) =>
+      if pred(e) then (e :: s._1, s._2) else (s._1, e :: s._2))
 
   def span(pred: A => Boolean): (List[A], List[A]) = ???
 
