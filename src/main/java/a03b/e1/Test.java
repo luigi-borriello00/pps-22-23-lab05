@@ -1,9 +1,6 @@
 package a03b.e1;
 
 import static org.junit.Assert.*;
-import java.util.*;
-
-import a03b.e1.ConferenceReviewing.Question;
 
 /**
  * Si consulti la documentazione dell'interfaccia ConferenceReviewing, che modella i risultati del processo di revisione
