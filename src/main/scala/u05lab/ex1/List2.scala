@@ -63,7 +63,7 @@ enum List[A]:
 
   /** EXERCISES */
   def zipRight: List[(A, Int)] =
-    foldRight(Nil())((e, s) => (e, this.length - s.length - 1) :: s)
+    foldRight(Nil())((e, s) => (e, this.length - (s.length + 1)) :: s)
 
   def partition(pred: A => Boolean): (List[A], List[A]) =
     foldRight((Nil(): List[A], Nil(): List[A]))((e, s) =>
