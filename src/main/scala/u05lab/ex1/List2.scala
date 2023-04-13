@@ -3,12 +3,13 @@ package u05lab.ex1
 import u05lab.ex1.List
 
 import scala.::
-/*
+
 // Ex 1. implement the missing methods both with recursion or with using fold, map, flatMap, and filters
 // List as a pure interface
 enum List[A]:
   case ::(h: A, t: List[A])
   case Nil()
+
   def ::(h: A): List[A] = List.::(h, this)
 
   def head: Option[A] = this match
@@ -62,20 +63,25 @@ enum List[A]:
 
   /** EXERCISES */
   def zipRight: List[(A, Int)] =
-    foldRight(Nil())((i, s) => (i, s.head.map(e => e._2).getOrElse(this.length) - 1) :: s)
+    foldRight(Nil())((e, s) => (e, this.length - s.length - 1) :: s)
 
   def partition(pred: A => Boolean): (List[A], List[A]) =
     foldRight((Nil(): List[A], Nil(): List[A]))((e, s) =>
-      if pred(e) then (e :: s._1, s._2) else (s._1, e :: s._2))
+      if pred(e) then ((e :: s._1), s._2) else (s._1, e :: s._2)
+    )
 
-  def span(pred: A => Boolean): (List[A], List[A]) =
-    ???
-
+  def span(pred: A => Boolean): (List[A], List[A]) = ???
+  /* foldRight((Nil(): List[A], Nil(): List[A]))((e, s) =>
+     if !pred(e) then ((e :: s._1), s._2) else (s._1, e :: s._2)
+   )*/
 
   /** @throws UnsupportedOperationException if the list is empty */
-  def reduce(op: (A, A) => A): A = ???
+  def reduce(op: (A, A) => A): A = this match
+    case Nil() => throw new IllegalStateException()
+    case h :: t => t.foldLeft(h)(op)
 
-  def takeRight(n: Int): List[A] = ???
+  def takeRight(n: Int): List[A] =
+    foldRight(Nil())((e, s) => if s.length < n then e :: s else s)
 
 // Factories
 object List:
@@ -90,7 +96,7 @@ object List:
 
 @main def checkBehaviour(): Unit =
   val reference = List(1, 2, 3, 4)
-//  println(reference.zipRight) // List((1, 0), (2, 1), (3, 2), (4, 3))
+  //  println(reference.zipRight) // List((1, 0), (2, 1), (3, 2), (4, 3))
   println(reference.partition(_ % 2 == 0)) // (List(2, 4), List(1, 3))
   println(reference.span(_ % 2 != 0)) // (List(1), List(2, 3, 4))
   println(reference.span(_ < 3)) // (List(1, 2), List(3, 4))
@@ -99,4 +105,3 @@ object List:
   catch case ex: Exception => println(ex) // prints exception
   println(List(10).reduce(_ + _)) // 10
   println(reference.takeRight(3)) // List(2, 3, 4)
-*/
