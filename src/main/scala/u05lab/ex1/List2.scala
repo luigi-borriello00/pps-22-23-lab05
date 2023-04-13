@@ -70,10 +70,10 @@ enum List[A]:
       if pred(e) then ((e :: s._1), s._2) else (s._1, e :: s._2)
     )
 
-  def span(pred: A => Boolean): (List[A], List[A]) = ???
-  /* foldRight((Nil(): List[A], Nil(): List[A]))((e, s) =>
-     if !pred(e) then ((e :: s._1), s._2) else (s._1, e :: s._2)
-   )*/
+  def span(pred: A => Boolean): (List[A], List[A]) =
+    foldRight((Nil(): List[A], Nil(): List[A]))((e, s) =>
+      if !pred(e) && s._1.length == 0 then (s._1, e :: s._2) else ((e :: s._1), s._2)
+    )
 
   /** @throws UnsupportedOperationException if the list is empty */
   def reduce(op: (A, A) => A): A = this match
@@ -96,7 +96,7 @@ object List:
 
 @main def checkBehaviour(): Unit =
   val reference = List(1, 2, 3, 4)
-  //  println(reference.zipRight) // List((1, 0), (2, 1), (3, 2), (4, 3))
+  println(reference.zipRight) // List((1, 0), (2, 1), (3, 2), (4, 3))
   println(reference.partition(_ % 2 == 0)) // (List(2, 4), List(1, 3))
   println(reference.span(_ % 2 != 0)) // (List(1), List(2, 3, 4))
   println(reference.span(_ < 3)) // (List(1, 2), List(3, 4))

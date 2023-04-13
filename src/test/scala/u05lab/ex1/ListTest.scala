@@ -24,9 +24,9 @@ class ListTest:
   @Test
   def testSpan(): Unit =
     val l = List(1, 2, 3, 4, 5)
-    val (less, more) = l.span(_ > 3)
-    assertEquals(List(1, 2), less)
+    val (less, more) = l.span(_ < 3)
     assertEquals(List(3, 4, 5), more)
+    assertEquals(List(1, 2), less)
 
   @Test
   def testTakeRight(): Unit =
