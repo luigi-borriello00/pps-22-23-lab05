@@ -2,7 +2,8 @@ package ex1
 
 import org.junit.Test
 import org.junit.Assert.*
-import List.*
+import ex1.*
+import ex1.List.*
 
 class ListTest:
 

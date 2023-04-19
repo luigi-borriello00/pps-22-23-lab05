@@ -1,10 +1,9 @@
-package u05lab.ex2;
-
-import a03b.e1.ConferenceReviewing;
+/*package u05lab.ex2;
 
 import org.junit.Assert.*;
+improt
 
-/**
+
  * Si consulti la documentazione dell'interfaccia ConferenceReviewing, che modella i risultati del processo di revisione
  * degli articoli di una conferenza. Ogni articolo viene da revisionato da uno o più revisori anonimi, ognuno dei quali fornisce
  * una valutazione (score) da 0 a 10 per 4 diverse "domande", modellate da ConferenceReviewing.Question. Un articolo viene
@@ -24,10 +23,10 @@ import org.junit.Assert.*;
  * - qualità della soluzione: 4 punti
  * <p>
  * Si tolga il commento al codice del test.
- */
+ 
 
 public class Test {
-/*
+
     private ConferenceReviewing cr;
 
 
@@ -102,5 +101,6 @@ public class Test {
         assertEquals(cr.averageWeightedFinalScoreMap().size(), 5);
     }
 
-*/
+
 }
+*/

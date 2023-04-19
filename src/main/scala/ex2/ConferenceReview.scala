@@ -5,11 +5,8 @@ import a03b.sol1.Pair
 import scala.::
 
 trait ConferenceReview:
-  enum Question:
-    case RELEVANCE
-    case SIGNIFICANCE
-    case CONFIDENCE
-    case FINAL
+
+  import ConferenceReview.Question
 
   def loadReview(article: Int, scores: Map[Question, Int]): Unit
 
@@ -25,17 +22,25 @@ trait ConferenceReview:
 
   def averageWeightedFinalScoreMap(): Map[Int, Double]
 
+  def getScores(): List[(Int, Map[Question, Int])]
+
 object ConferenceReview:
+  enum Question:
+    case RELEVANCE
+    case SIGNIFICANCE
+    case CONFIDENCE
+    case FINAL
+
   def apply(): ConferenceReview = ConferenceReviewImpl()
 
   private class ConferenceReviewImpl extends ConferenceReview:
-    private val reviews: List[(Int, Map[Question, Int])] = Nil
+    private var reviews: List[(Int, Map[Question, Int])] = List()
 
     override def loadReview(article: Int, scores: Map[Question, Int]): Unit =
-      this.reviews :+ (article, scores)
+      this.reviews = this.reviews :+ (article, scores)
 
     override def loadReview(article: Int, relevance: Int, significance: Int, confidence: Int, fin: Int): Unit =
-      this.reviews :+
+      this.reviews = this.reviews :+
         (
           article, Map(
           Question.RELEVANCE -> relevance,
@@ -45,14 +50,23 @@ object ConferenceReview:
         )
         )
 
+
     override def orderedScores(article: Int, question: Question): List[Int] =
-      ???
+      this.reviews
+        .filter(_._1 == article)
+        .map((_, r) => r)
+        .map(map => map(question))
+        .sorted
+        .reverse
+
 
     override def averageFinalScore(article: Int): Double = ???
 
     override def acceptedArticles(): Set[Int] = ???
 
-    override def sortedAcceptedArticles(): List[Pair[Int, Double]] = ???
+    override def sortedAcceptedArticles(): List[(Int, Double)] = ???
+
+    override def getScores(): List[(Int, Map[Question, Int])] = this.reviews
 
     override def averageWeightedFinalScoreMap(): Map[Int, Double] = ???
 
