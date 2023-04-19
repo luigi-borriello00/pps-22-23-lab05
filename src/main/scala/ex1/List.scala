@@ -1,6 +1,4 @@
-package u05lab.ex1
-
-import u05lab.ex1.List
+package ex1
 
 import scala.::
 

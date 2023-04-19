@@ -1,4 +1,4 @@
-package u05lab.ex3
+package ex3
 
 import java.util.concurrent.TimeUnit
 

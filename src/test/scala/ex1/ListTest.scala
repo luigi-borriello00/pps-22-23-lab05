@@ -1,4 +1,4 @@
-package u05lab.ex1
+package ex1
 
 import org.junit.Test
 import org.junit.Assert.*
