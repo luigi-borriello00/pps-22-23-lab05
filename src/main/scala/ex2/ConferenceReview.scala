@@ -60,16 +60,26 @@ object ConferenceReview:
         .reverse
 
 
+    private def calculateAverage(scores: List[Int]): Double =
+      scores.foldLeft(0.0)((e, s) => e + s) / scores.length
+
     override def averageFinalScore(article: Int): Double =
-      val articleReviews = this.orderedScores(article, Question.FINAL)
-      articleReviews.foldLeft(0.0)((e, s) => e + s) / articleReviews.length
+      this.calculateAverage(this.orderedScores(article, Question.FINAL))
 
     override def acceptedArticles(): Set[Int] =
-      this.reviews.filter((a, r) => this.averageFinalScore(a) >= 8)
+      this.reviews
+        .filter((a, _) => this.averageFinalScore(a) >= 8)
         .map((a, _) => a)
         .toSet
 
-    override def sortedAcceptedArticles(): List[(Int, Double)] = ???
+
+    override def sortedAcceptedArticles(): List[(Int, Double)] =
+      this.acceptedArticles()
+        .map(a => (a, averageFinalScore(a)))
+        .toList
+        .sorted
+        .reverse
+
 
     override def getScores(): List[(Int, Map[Question, Int])] = this.reviews
 

@@ -9,6 +9,7 @@ class ConferenceReviewTest:
   reviews.loadReview(1, 10, 10, 10, 8)
   reviews.loadReview(2, 10, 10, 10, 10)
   reviews.loadReview(3, 10, 10, 10, 9)
+  reviews.loadReview(3, 10, 10, 10, 9)
   reviews.loadReview(4, 10, 10, 10, 7)
   reviews.loadReview(5, 10, 10, 10, 6)
   reviews.loadReview(1, 10, 10, 10, 5)
@@ -27,4 +28,9 @@ class ConferenceReviewTest:
   @Test def testAcceptedArticles(): Unit =
     val expected = Set(2, 3)
     val actual = reviews.acceptedArticles()
+    assertEquals(expected, actual)
+
+  @Test def testSortedAcceptedArticles() =
+    val expected = List((3, 9.0), (2, 10.0))
+    val actual = reviews.sortedAcceptedArticles()
     assertEquals(expected, actual)
