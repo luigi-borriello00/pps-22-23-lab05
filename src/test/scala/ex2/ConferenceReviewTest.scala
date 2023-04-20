@@ -34,3 +34,8 @@ class ConferenceReviewTest:
     val expected = List((3, 9.0), (2, 10.0))
     val actual = reviews.sortedAcceptedArticles()
     assertEquals(expected, actual)
+
+  // the average value of CONFIDENCE*FINAL/10
+  @Test def testWeightedAverageFinalScore() =
+    val expected = Map(1 -> 6.5, 2 -> 10.0, 3 -> 9.0, 4 -> 7.0, 5 -> 6.0)
+    assertEquals(expected, reviews.averageWeightedFinalScoreMap())

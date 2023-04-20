@@ -83,5 +83,18 @@ object ConferenceReview:
 
     override def getScores(): List[(Int, Map[Question, Int])] = this.reviews
 
-    override def averageWeightedFinalScoreMap(): Map[Int, Double] = ???
+    private def calculateWeightedAverage(a: Int): Double =
+      val confidenceAvg = this.calculateAverage(this.orderedScores(a, Question.CONFIDENCE))
+      val finalAvg = this.calculateAverage(this.orderedScores(a, Question.FINAL))
+      (confidenceAvg * finalAvg) / 10
+
+
+    override def averageWeightedFinalScoreMap(): Map[Int, Double] =
+      this.reviews
+        .map((a, _) => (a, this.calculateWeightedAverage(a)))
+        .sorted
+        .toMap
+
+
+
 
