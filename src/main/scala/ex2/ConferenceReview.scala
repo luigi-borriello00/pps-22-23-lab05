@@ -22,8 +22,6 @@ trait ConferenceReview:
 
   def averageWeightedFinalScoreMap(): Map[Int, Double]
 
-  def getScores(): List[(Int, Map[Question, Int])]
-
 object ConferenceReview:
   enum Question:
     case RELEVANCE
@@ -40,38 +38,35 @@ object ConferenceReview:
       this.reviews = this.reviews :+ (article, scores)
 
     override def loadReview(article: Int, relevance: Int, significance: Int, confidence: Int, fin: Int): Unit =
-      this.reviews = this.reviews :+
-        (
-          article, Map(
-          Question.RELEVANCE -> relevance,
-          Question.SIGNIFICANCE -> significance,
-          Question.CONFIDENCE -> confidence,
-          Question.FINAL -> fin
-        )
-        )
+      this.loadReview(article, Map(
+        Question.RELEVANCE -> relevance,
+        Question.SIGNIFICANCE -> significance,
+        Question.CONFIDENCE -> confidence,
+        Question.FINAL -> fin
+      ))
 
-
-    override def orderedScores(article: Int, question: Question): List[Int] =
+    private def getScoresFromArticleAndQuestion(article: Int, question: Question): List[Int] =
       this.reviews
         .filter(_._1 == article)
         .map((_, r) => r)
         .map(map => map(question))
+
+    override def orderedScores(article: Int, question: Question): List[Int] =
+      this.getScoresFromArticleAndQuestion(article, question)
         .sorted
         .reverse
-
 
     private def calculateAverage(scores: List[Int]): Double =
       scores.foldLeft(0.0)((e, s) => e + s) / scores.length
 
     override def averageFinalScore(article: Int): Double =
-      this.calculateAverage(this.orderedScores(article, Question.FINAL))
+      this.calculateAverage(this.getScoresFromArticleAndQuestion(article, Question.FINAL))
 
     override def acceptedArticles(): Set[Int] =
       this.reviews
         .filter((a, _) => this.averageFinalScore(a) >= 8)
         .map((a, _) => a)
         .toSet
-
 
     override def sortedAcceptedArticles(): List[(Int, Double)] =
       this.acceptedArticles()
@@ -80,21 +75,13 @@ object ConferenceReview:
         .sorted
         .reverse
 
-
-    override def getScores(): List[(Int, Map[Question, Int])] = this.reviews
-
     private def calculateWeightedAverage(a: Int): Double =
-      val confidenceAvg = this.calculateAverage(this.orderedScores(a, Question.CONFIDENCE))
-      val finalAvg = this.calculateAverage(this.orderedScores(a, Question.FINAL))
+      val confidenceAvg = this.calculateAverage(this.getScoresFromArticleAndQuestion(a, Question.CONFIDENCE))
+      val finalAvg = this.calculateAverage(this.getScoresFromArticleAndQuestion(a, Question.FINAL))
       (confidenceAvg * finalAvg) / 10
-
 
     override def averageWeightedFinalScoreMap(): Map[Int, Double] =
       this.reviews
         .map((a, _) => (a, this.calculateWeightedAverage(a)))
         .sorted
         .toMap
-
-
-
-
