@@ -19,3 +19,12 @@ class ConferenceReviewTest:
     val actual = reviews.orderedScores(1, Question.FINAL)
     assertEquals(expected, actual)
 
+  @Test def testAverageFinalScore(): Unit =
+    val expected: Double = 6.5
+    val actual = reviews.averageFinalScore(1)
+    assertEquals(expected, actual, 0.0001)
+
+  @Test def testAcceptedArticles(): Unit =
+    val expected = Set(2, 3)
+    val actual = reviews.acceptedArticles()
+    assertEquals(expected, actual)
